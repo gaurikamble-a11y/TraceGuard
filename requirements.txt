@@ -1,0 +1,7 @@
+# TraceGuard Core Dependencies
+# Tested on Python 3.14 with virtual environment packages
+
+streamlit>=1.40.0,<=1.66.1
+pandas>=2.2.0,<=3.1.0
+plotly>=5.20.0,<=7.1.0
+mitmproxy>=12.0.0,<=12.3.1

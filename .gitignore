@@ -1,0 +1,45 @@
+# ==========================================
+# TraceGuard - Git Ignore Configuration
+# ==========================================
+
+# Byte-compiled / optimized / Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# TraceGuard Runtime Telemetry & Generated Data
+traffic.jsonl
+*.log
+traceguard_*.csv
+
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# IDE / Editor Temporary Files & Cache
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
