@@ -129,12 +129,13 @@ TraceGuard/
 ├── app.py
 ├── test_server.py
 ├── test_analyzer.py
+├── sample_traffic.jsonl
 ├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
 
-Note: `traffic.jsonl` is generated automatically at runtime during traffic capture and is not tracked as a source file. The `.venv` directory contains the local Python virtual environment and is not part of the source code.
+Note: `traffic.jsonl` is generated automatically at runtime during live traffic capture and is excluded from source control. `sample_traffic.jsonl` contains synthetic demonstration telemetry enabling offline preview and cloud deployment (e.g. Streamlit Community Cloud) when no local proxy log is present. The `.venv` directory contains the local Python virtual environment and is not part of the source code.
 
 ## 8. Installation and Execution
 

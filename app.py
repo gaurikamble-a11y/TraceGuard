@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 LOG_FILE = Path(__file__).with_name("traffic.jsonl")
+SAMPLE_LOG_FILE = Path(__file__).with_name("sample_traffic.jsonl")
 
 st.set_page_config(
     page_title="TraceGuard | Security Operations",
@@ -406,12 +407,12 @@ footer {visibility: hidden;}
 
 # ==================== LOAD DATA ====================
 
-def load_events():
-    if not LOG_FILE.exists():
+def _parse_log_file(file_path):
+    if not file_path.exists():
         return []
 
     records = []
-    with LOG_FILE.open("r", encoding="utf-8") as file:
+    with file_path.open("r", encoding="utf-8") as file:
         for line in file:
             try:
                 item = json.loads(line)
@@ -422,7 +423,22 @@ def load_events():
     return records
 
 
-events = load_events()
+def load_events():
+    # 1. Prefer live captured traffic log if present and non-empty
+    live_records = _parse_log_file(LOG_FILE)
+    if live_records:
+        return live_records, "live"
+
+    # 2. Fall back to sample demonstration dataset when no local log exists (e.g. Streamlit Cloud)
+    sample_records = _parse_log_file(SAMPLE_LOG_FILE)
+    if sample_records:
+        return sample_records, "sample"
+
+    # 3. No records available
+    return [], "empty"
+
+
+events, data_source = load_events()
 df = pd.DataFrame(events)
 all_findings = []
 
@@ -577,15 +593,24 @@ with st.sidebar:
     )
 
     if events:
-        st.markdown(
-            '<div class="tg-status"><span class="tg-dot"></span> SYSTEM ACTIVE</div>',
-            unsafe_allow_html=True,
-        )
+        if data_source == "sample":
+            st.markdown(
+                '<div class="tg-status"><span class="tg-dot"></span> CLOUD DEMO (SAMPLE DATA)</div>',
+                unsafe_allow_html=True,
+            )
+        else:
+            st.markdown(
+                '<div class="tg-status"><span class="tg-dot"></span> SYSTEM ACTIVE</div>',
+                unsafe_allow_html=True,
+            )
     else:
         st.caption("Waiting for captured traffic")
 
     st.write("")
-    st.caption("LOCAL ANALYSIS ENVIRONMENT")
+    if data_source == "sample":
+        st.caption("STREAMLIT CLOUD PREVIEW")
+    else:
+        st.caption("LOCAL ANALYSIS ENVIRONMENT")
     st.caption("TraceGuard · MWS Project")
     st.caption("Version 1.0")
 

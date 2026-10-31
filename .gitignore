@@ -16,6 +16,7 @@ ENV/
 
 # TraceGuard Runtime Telemetry & Generated Data
 traffic.jsonl
+!sample_traffic.jsonl
 *.log
 traceguard_*.csv
 
